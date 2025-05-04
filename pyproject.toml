@@ -11,5 +11,6 @@ dependencies = [
     "gunicorn>=23.0.0",
     "psycopg2-binary>=2.9.10",
     "rich>=14.0.0",
+    "sendgrid>=6.11.0",
     "typer>=0.15.3",
 ]

@@ -386,6 +386,19 @@ body {
   font-weight: bold;
 }
 
+.bonus-highlight {
+  color: #11FF99;
+  font-weight: bold;
+  animation: efficiency-pulse 2s infinite;
+}
+
+.bonus-info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px dashed #11FF99;
+  background-color: rgba(17, 255, 153, 0.1);
+}
+
 .features-list li:nth-last-child(1) {
   color: #FFD700;
   animation: coming-soon-blink 2s infinite;
