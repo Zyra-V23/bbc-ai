@@ -614,6 +614,17 @@ body {
   font-size: 0.9rem;
   letter-spacing: 1px;
   border-radius: 3px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.zk-badge:hover {
+  background-color: rgba(153, 51, 255, 0.5);
+  color: #FFFFFF;
+  text-shadow: 0 0 8px #9933FF;
+  box-shadow: 0 0 10px rgba(153, 51, 255, 0.6);
+  transform: scale(1.05);
 }
 
 /* Responsive adjustments */
