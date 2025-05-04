@@ -17,6 +17,11 @@
   --glow-success: 0 0 5px rgba(0, 255, 102, 0.5), 0 0 8px rgba(0, 255, 102, 0.3); /* Neon green glow - reduced intensity */
 }
 
+@keyframes pulseBorder {
+  from { border-color: rgba(255, 45, 149, 0.3); box-shadow: 0 0 20px rgba(255, 45, 149, 0.1), 0 0 10px rgba(45, 201, 255, 0.1); }
+  to { border-color: rgba(255, 45, 149, 0.8); box-shadow: 0 0 40px rgba(255, 45, 149, 0.3), 0 0 20px rgba(45, 201, 255, 0.2); }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -158,13 +163,14 @@ header {
 /* Whitelist section */
 .whitelist {
   padding: 4rem 0;
-  background-color: rgba(20, 22, 45, 0.7);
+  background-color: rgba(20, 22, 45, 0.85);
   border-radius: 0.5rem;
   margin: 2rem 0;
-  border: 1px solid rgba(45, 201, 255, 0.2);
-  box-shadow: 0 0 30px rgba(45, 201, 255, 0.1);
+  border: 2px solid rgba(255, 45, 149, 0.5);
+  box-shadow: 0 0 40px rgba(255, 45, 149, 0.2), 0 0 20px rgba(45, 201, 255, 0.2);
   position: relative;
   overflow: hidden;
+  animation: pulseBorder 3s infinite alternate;
 }
 
 .whitelist::before {
@@ -184,13 +190,27 @@ header {
 
 .whitelist h2 {
   text-align: center;
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
   color: var(--primary-color);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 0 0 3px rgba(255, 45, 149, 0.2);
-  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px rgba(255, 45, 149, 0.3);
+  font-weight: 800;
+  position: relative;
+  display: inline-block;
+}
+
+.whitelist h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  border-radius: 2px;
 }
 
 .whitelist-content {
@@ -222,23 +242,31 @@ header {
   color: var(--success-color);
   margin-right: 0.5rem;
   font-weight: bold;
+  text-shadow: 0 0 3px rgba(0, 255, 102, 0.3);
+  font-size: 1.2rem;
 }
 
 .scarcity {
-  background-color: rgba(255, 194, 51, 0.05);
-  padding: 1.2rem;
+  background-color: rgba(255, 194, 51, 0.1);
+  padding: 1.5rem;
   border-radius: 0.25rem;
-  border: 1px solid rgba(255, 194, 51, 0.3);
-  margin: 1.5rem 0 2.5rem;
-  font-weight: 600;
+  border: 2px solid rgba(255, 194, 51, 0.5);
+  margin: 2rem 0 2.5rem;
+  font-weight: 700;
   color: var(--warning-color);
   position: relative;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 0.95rem;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
   text-shadow: 0 0 5px rgba(255, 194, 51, 0.3);
   text-align: center;
-  box-shadow: 0 0 15px rgba(255, 194, 51, 0.1);
+  box-shadow: 0 0 20px rgba(255, 194, 51, 0.2);
+  animation: pulse-warning 2s infinite alternate;
+}
+
+@keyframes pulse-warning {
+  from { box-shadow: 0 0 10px rgba(255, 194, 51, 0.2); }
+  to { box-shadow: 0 0 20px rgba(255, 194, 51, 0.4); }
 }
 
 /* Form */
@@ -246,10 +274,12 @@ header {
   width: 100%;
   max-width: 500px;
   position: relative;
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 0.5rem;
-  background-color: rgba(7, 8, 15, 0.4);
-  border: 1px solid rgba(45, 201, 255, 0.1);
+  background-color: rgba(7, 8, 15, 0.6);
+  border: 2px solid rgba(45, 201, 255, 0.3);
+  box-shadow: 0 0 25px rgba(45, 201, 255, 0.15);
+  margin-top: 1.5rem;
 }
 
 .form-group {
@@ -325,12 +355,21 @@ header {
   color: var(--dark-color);
   box-shadow: 0 0 10px rgba(255, 45, 149, 0.5);
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  font-size: 1.1rem;
+  padding: 1rem 2.2rem;
+  letter-spacing: 1px;
+  animation: pulse-button 2s infinite alternate;
+}
+
+@keyframes pulse-button {
+  from { box-shadow: 0 0 10px rgba(255, 45, 149, 0.5); }
+  to { box-shadow: 0 0 20px rgba(255, 45, 149, 0.8), 0 0 30px rgba(255, 45, 149, 0.4); }
 }
 
 .btn-primary:hover {
   background-color: var(--primary-color);
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(255, 45, 149, 0.7), 0 0 30px rgba(255, 45, 149, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(255, 45, 149, 0.8), 0 0 40px rgba(255, 45, 149, 0.5);
 }
 
 /* Footer */
