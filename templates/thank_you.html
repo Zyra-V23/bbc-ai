@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Thank You - Smart Contract Audit Companion{% endblock %}
+
+{% block content %}
+<section class="thank-you">
+    <div class="icon-large">✓</div>
+    <h1>Thank You!</h1>
+    <p>You've been added to our exclusive whitelist for early access to the Smart Contract Audit Companion.</p>
+    <p>We'll notify you as soon as the alpha version is ready for testing.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+</section>
+{% endblock %}
