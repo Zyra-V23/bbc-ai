@@ -52,7 +52,8 @@ with flask_app.app_context():
     db.create_all()
 
 # Configuration
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "bug_bounty_admin")
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "Zyra-V23")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "Ñaia.13.")
 
 # Helper functions
 def is_authenticated():
@@ -116,13 +117,14 @@ def thank_you():
 def admin_login():
     """Admin login page"""
     if request.method == 'POST':
+        username = request.form.get('username')
         password = request.form.get('password')
         
-        if password == ADMIN_PASSWORD:
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
             session['authenticated'] = True
             return redirect(url_for('admin_emails'))
         else:
-            flash('Invalid password', 'error')
+            flash('Invalid username or password', 'error')
     
     return render_template('admin_login.html')
 
