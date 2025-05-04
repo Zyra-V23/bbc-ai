@@ -424,6 +424,33 @@ body {
   animation: efficiency-pulse 2s infinite;
 }
 
+.call-badge {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 8px;
+  background-color: #FF003C;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 3px;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 8px #FF003C;
+  animation: badge-pulse 1.5s infinite alternate;
+  vertical-align: middle;
+  letter-spacing: 1px;
+}
+
+@keyframes badge-pulse {
+  0% {
+    box-shadow: 0 0 8px #FF003C;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 15px #FF003C, 0 0 20px #FF003C;
+    text-shadow: 0 0 8px white;
+  }
+}
+
 .bonus-info {
   margin-top: 1.5rem;
   padding: 1rem;
