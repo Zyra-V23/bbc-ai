@@ -19,73 +19,38 @@ class SolidityParser:
         Returns:
             Dict with contract info
         """
-        result = {
-            "license": None,
-            "solidity_version": None,
-            "contracts": []
+        info = {
+            "contracts": [],
+            "imports": [],
+            "libraries": [],
+            "inheritance": []
         }
         
-        # Extract license
-        license_match = re.search(r'\/\/\s*SPDX-License-Identifier:\s*([^\n]+)', source_code)
-        if license_match:
-            result["license"] = license_match.group(1).strip()
-        
-        # Extract Solidity version
+        # Find pragma statement
         pragma_match = re.search(r'pragma\s+solidity\s+([^;]+);', source_code)
         if pragma_match:
-            result["solidity_version"] = pragma_match.group(1).strip()
+            info["pragma"] = pragma_match.group(1).strip()
         
-        # Extract contracts
-        contract_matches = re.finditer(r'contract\s+(\w+)(?:\s+is\s+([^\{]+))?\s*\{([^\}]+(?:\{[^\}]*\}[^\}]*)*)\}', source_code)
+        # Find imports
+        import_matches = re.findall(r'import\s+[\'"]([^\'"]+)[\'"]', source_code)
+        info["imports"] = import_matches
         
-        for contract_match in contract_matches:
-            contract_name = contract_match.group(1).strip()
-            inheritance = contract_match.group(2).strip() if contract_match.group(2) else ""
-            contract_body = contract_match.group(3)
+        # Find contract definitions
+        contract_matches = re.findall(r'contract\s+(\w+)(?:\s+is\s+([^{]+))?', source_code)
+        for match in contract_matches:
+            contract_name = match[0].strip()
+            info["contracts"].append(contract_name)
             
-            contract_info = {
-                "name": contract_name,
-                "inheritance": [base.strip() for base in inheritance.split(',')] if inheritance else [],
-                "functions": [],
-                "state_variables": []
-            }
-            
-            # Extract functions
-            function_matches = re.finditer(r'function\s+(\w+)\s*\(([^\)]*)\)(?:\s+external|\s+public|\s+internal|\s+private)?(?:\s+view|\s+pure)?(?:\s+returns\s*\([^\)]*\))?\s*(?:\{|;)', contract_body)
-            
-            for function_match in function_matches:
-                function_name = function_match.group(1).strip()
-                function_params = function_match.group(2).strip()
-                
-                # Extract visibility and mutability
-                visibility_match = re.search(r'(external|public|internal|private)', function_match.group(0))
-                visibility = visibility_match.group(0) if visibility_match else "internal"  # Default visibility
-                
-                mutability_match = re.search(r'(view|pure)', function_match.group(0))
-                mutability = mutability_match.group(0) if mutability_match else ""
-                
-                contract_info["functions"].append({
-                    "name": function_name,
-                    "parameters": function_params,
-                    "visibility": visibility,
-                    "mutability": mutability
-                })
-            
-            # Extract state variables
-            # This is a simplified approach; a complete parser would be more complex
-            var_matches = re.finditer(r'(uint|int|address|bool|string|bytes\d*)\s+(?:public|private|internal)?\s+(\w+)\s*;', contract_body)
-            for var_match in var_matches:
-                var_type = var_match.group(1).strip()
-                var_name = var_match.group(2).strip()
-                
-                contract_info["state_variables"].append({
-                    "name": var_name,
-                    "type": var_type
-                })
-            
-            result["contracts"].append(contract_info)
+            # Check for inheritance
+            if match[1]:
+                inheritance = [i.strip() for i in match[1].split(',')]
+                info["inheritance"].extend(inheritance)
         
-        return result
+        # Find library definitions
+        library_matches = re.findall(r'library\s+(\w+)', source_code)
+        info["libraries"] = library_matches
+        
+        return info
     
     @staticmethod
     def check_common_vulnerabilities(source_code: str) -> List[Dict[str, Any]]:
@@ -100,70 +65,58 @@ class SolidityParser:
         """
         findings = []
         
-        # Check for reentrancy
-        if re.search(r'\.call\{value:', source_code) and re.search(r'require\(.*balance', source_code):
-            # If a contract has both .call{value:...} and checks balances, it might be vulnerable
-            if not re.search(r'ReentrancyGuard', source_code) and not re.search(r'nonReentrant', source_code):
-                findings.append({
-                    "title": "Potential Reentrancy Vulnerability",
-                    "description": "The contract uses low-level .call with value transfer but may not implement reentrancy guards.",
-                    "severity": "high"
-                })
-        
-        # Check for tx.origin authentication
-        if re.search(r'tx\.origin', source_code):
+        # Check for reentrancy vulnerabilities (basic pattern)
+        if re.search(r'\.call\{value:.*\}\([^\)]*\).*[\s\S]*-=', source_code):
             findings.append({
-                "title": "Use of tx.origin for Authentication",
-                "description": "Using tx.origin for authentication is vulnerable to phishing attacks. Use msg.sender instead.",
-                "severity": "medium"
+                "name": "Potential Reentrancy Vulnerability",
+                "description": "The contract appears to perform an external call before updating state. "
+                               "This pattern may lead to reentrancy attacks.",
+                "severity": "high",
+                "recommendation": "Follow the checks-effects-interactions pattern: first perform state "
+                                 "changes, then interact with external contracts."
             })
         
-        # Check for unchecked external calls
-        if re.search(r'\.call\(', source_code) and not re.search(r'require\(.*\.call', source_code):
+        # Check for tx.origin usage
+        if re.search(r'tx\.origin\s*==', source_code):
             findings.append({
-                "title": "Unchecked External Call",
-                "description": "External call results should be checked to handle failures properly.",
-                "severity": "medium"
+                "name": "Use of tx.origin for Authorization",
+                "description": "The contract uses tx.origin for authorization, which can lead to phishing attacks.",
+                "severity": "high",
+                "recommendation": "Use msg.sender instead of tx.origin for authorization."
             })
         
-        # Check for unbounded loops
-        if re.search(r'for\s*\([^;]*;\s*[^;]*;\s*[^\)]*\)', source_code):
+        # Check for unchecked send/transfer
+        if re.search(r'\.send\([^\)]+\);(?!\s*(?:require|assert|if))', source_code):
             findings.append({
-                "title": "Unbounded Loop",
-                "description": "Contract contains loops that may iterate over unbounded data structures, risking gas limits.",
-                "severity": "low"
+                "name": "Unchecked Send Return Value",
+                "description": "The contract does not check the return value of send() function calls.",
+                "severity": "medium",
+                "recommendation": "Always check the return value of send() or use transfer() instead."
             })
         
-        # Check for self-destruct usage
-        if re.search(r'(selfdestruct|suicide)\s*\(', source_code):
+        # Check for unsafe delegatecall
+        if re.search(r'\.delegatecall\(', source_code):
             findings.append({
-                "title": "Use of selfdestruct",
-                "description": "Contract can be self-destructed. Ensure this function is properly protected.",
-                "severity": "info"
+                "name": "Use of delegatecall",
+                "description": "The contract uses delegatecall, which can be dangerous if not properly secured.",
+                "severity": "medium",
+                "recommendation": "Be careful with delegatecall. Ensure the target contract is trusted and validate all inputs."
             })
         
-        # Check for calls inside loops
-        if re.search(r'for\s*\([^{]*\{[^}]*\.(call|send|transfer)', source_code):
-            findings.append({
-                "title": "External Call Inside Loop",
-                "description": "Performing external calls inside loops can lead to DoS conditions.",
-                "severity": "high"
-            })
-            
-        # Check for weak randomness
-        if re.search(r'block\.(timestamp|difficulty|coinbase|number)', source_code):
-            findings.append({
-                "title": "Weak Randomness Source",
-                "description": "Using block properties as randomness sources is predictable and can be manipulated by miners.",
-                "severity": "medium"
-            })
+        # Check for version-specific issues
+        pragma_match = re.search(r'pragma\s+solidity\s+([^;]+);', source_code)
+        if pragma_match:
+            pragma_version = pragma_match.group(1).strip()
+            if pragma_version.startswith(('<', '^')) and ('0.8.0' not in pragma_version):
+                # Check for pre-0.8.0 without SafeMath
+                if (not re.search(r'using\s+SafeMath', source_code) and 
+                    re.search(r'(?<!\+\+|--|\+=|-=|\*=|/=)(\+|-|\*|/)(?![^\n]*\bSafeMath\b)', source_code)):
+                    findings.append({
+                        "name": "Potential Integer Overflow/Underflow",
+                        "description": f"The contract uses Solidity {pragma_version} without SafeMath library "
+                                      "for arithmetic operations.",
+                        "severity": "high",
+                        "recommendation": "Use SafeMath library for arithmetic operations or upgrade to Solidity 0.8.0+."
+                    })
         
-        # Check for missing zero address validation
-        if re.search(r'address\s+.*=', source_code) and not re.search(r'require\(.*!=\s*address\(0\)', source_code):
-            findings.append({
-                "title": "Missing Zero Address Validation",
-                "description": "Contract may not validate against zero addresses, risking fund loss or contract locking.",
-                "severity": "low"
-            })
-            
         return findings

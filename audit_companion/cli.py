@@ -19,6 +19,7 @@ from .config import config, Colors
 from .ai_integration import SmartContractAnalyzer
 from .contract_analyzer import SolidityParser
 from .cvss import CVSSCalculator
+from .vulnerability_db import VulnerabilityDatabase
 
 # Initialize the CLI app
 app = typer.Typer(add_completion=False)
@@ -56,6 +57,7 @@ else:
         help_table.add_row("analyze", "Analyze a smart contract using AI")
         help_table.add_row("triage", "Triage a vulnerability using AI")
         help_table.add_row("cvss", "Calculate CVSS score for a vulnerability")
+        help_table.add_row("vulndb", "Access vulnerability database")
         help_table.add_row("exit/quit", "Exit the application")
         
         console.print(help_table)
@@ -513,6 +515,246 @@ else:
         """Exit the application"""
         console.print("[yellow]Exiting application. Goodbye![/yellow]")
         sys.exit(0)
+    
+    @app.command("vulndb")
+    def vulnerability_db_commands(cmd: str = typer.Argument(..., help="Command: initialize, search, list, show, check"),
+                               id: Optional[int] = typer.Argument(None, help="Vulnerability ID"),
+                               query: Optional[str] = typer.Argument(None, help="Search query or category")):
+        """
+        Access the vulnerability database
+        
+        Commands:
+        - initialize: Create and seed the vulnerability database
+        - search: Search for vulnerabilities by keyword
+        - list: List vulnerabilities (all or by category/tag)
+        - show: Show details of a specific vulnerability
+        - check: Check a contract file for known vulnerabilities
+        """
+        # Initialize the vulnerability database
+        try:
+            db = VulnerabilityDatabase()
+            
+            if cmd == "initialize":
+                console.print("Initializing vulnerability database...")
+                
+                # Seed the database with common vulnerabilities
+                if db.seed_common_vulnerabilities():
+                    console.print("[green]Successfully initialized and seeded vulnerability database.[/green]")
+                else:
+                    console.print("[red]Failed to initialize vulnerability database.[/red]")
+            
+            elif cmd == "search" and query is not None:
+                console.print(f"Searching for vulnerabilities matching '{query}'...")
+                
+                results = db.search_vulnerabilities(query)
+                
+                if not results:
+                    console.print("[yellow]No vulnerabilities found matching the search query.[/yellow]")
+                    return
+                
+                table = Table(title=f"Search Results for '{query}'")
+                table.add_column("ID", style="dim")
+                table.add_column("Name")
+                table.add_column("Category")
+                table.add_column("Severity")
+                table.add_column("CVSS")
+                
+                for vuln in results:
+                    # Set color based on severity
+                    severity_color = Colors.MEDIUM_PRIORITY
+                    if vuln["severity"] == "critical" or vuln["severity"] == "high":
+                        severity_color = Colors.HIGH_PRIORITY
+                    elif vuln["severity"] == "low" or vuln["severity"] == "info":
+                        severity_color = Colors.LOW_PRIORITY
+                    
+                    table.add_row(
+                        str(vuln["id"]),
+                        vuln["name"],
+                        vuln["category_name"] or "Uncategorized",
+                        f"[{severity_color}]{vuln['severity']}[/{severity_color}]",
+                        f"{vuln['cvss_score']:.1f}" if vuln["cvss_score"] else "N/A"
+                    )
+                
+                console.print(table)
+            
+            elif cmd == "list":
+                category_name = query
+                console.print("Listing all vulnerabilities..." if not category_name else
+                             f"Listing vulnerabilities in category '{category_name}'...")
+                
+                # Get list of categories first
+                categories = db.get_categories()
+                category_id = None
+                
+                if category_name:
+                    # Find category ID by name
+                    for cat in categories:
+                        if cat["name"].lower() == category_name.lower():
+                            category_id = cat["id"]
+                            break
+                    
+                    if category_id is None:
+                        console.print(f"[red]Category '{category_name}' not found.[/red]")
+                        return
+                
+                vulnerabilities = db.get_vulnerabilities(category_id=category_id)
+                
+                if not vulnerabilities:
+                    console.print("[yellow]No vulnerabilities found.[/yellow]")
+                    return
+                
+                table = Table(title="Common Smart Contract Vulnerabilities")
+                table.add_column("ID", style="dim")
+                table.add_column("Name")
+                table.add_column("Category")
+                table.add_column("Severity")
+                table.add_column("CVSS")
+                
+                for vuln in vulnerabilities:
+                    # Set color based on severity
+                    severity_color = Colors.MEDIUM_PRIORITY
+                    if vuln["severity"] == "critical" or vuln["severity"] == "high":
+                        severity_color = Colors.HIGH_PRIORITY
+                    elif vuln["severity"] == "low" or vuln["severity"] == "info":
+                        severity_color = Colors.LOW_PRIORITY
+                    
+                    table.add_row(
+                        str(vuln["id"]),
+                        vuln["name"],
+                        vuln["category_name"] or "Uncategorized",
+                        f"[{severity_color}]{vuln['severity']}[/{severity_color}]",
+                        f"{vuln['cvss_score']:.1f}" if vuln["cvss_score"] else "N/A"
+                    )
+                
+                console.print(table)
+                
+                # Also display available categories
+                cat_table = Table(title="Available Categories")
+                cat_table.add_column("ID", style="dim")
+                cat_table.add_column("Name")
+                cat_table.add_column("Description")
+                
+                for cat in categories:
+                    cat_table.add_row(
+                        str(cat["id"]),
+                        cat["name"],
+                        cat["description"] or ""
+                    )
+                
+                console.print(cat_table)
+            
+            elif cmd == "show" and id is not None:
+                console.print(f"Showing details for vulnerability #{id}...")
+                
+                vuln = db.get_vulnerability(id)
+                
+                if vuln is None:
+                    console.print(f"[red]Vulnerability #{id} not found.[/red]")
+                    return
+                
+                # Set color based on severity
+                severity_color = Colors.MEDIUM_PRIORITY
+                if vuln["severity"] == "critical" or vuln["severity"] == "high":
+                    severity_color = Colors.HIGH_PRIORITY
+                elif vuln["severity"] == "low" or vuln["severity"] == "info":
+                    severity_color = Colors.LOW_PRIORITY
+                
+                # Handle tags
+                tags_str = ", ".join(vuln.get("tags", [])) if vuln.get("tags") else "None"
+                
+                console.print(Panel(
+                    f"[bold cyan]{vuln['name']}[/bold cyan]\n\n"
+                    f"[bold]Category:[/bold] {vuln['category_name'] or 'Uncategorized'}\n"
+                    f"[bold]Severity:[/bold] [{severity_color}]{vuln['severity']}[/{severity_color}]\n"
+                    f"[bold]CVSS Score:[/bold] {vuln['cvss_score']:.1f}\n"
+                    f"[bold]CVSS Vector:[/bold] {vuln['cvss_vector'] or 'N/A'}\n\n"
+                    f"[bold]Description:[/bold]\n{vuln['description']}\n\n"
+                    f"[bold]Recommendation:[/bold]\n{vuln['recommendation'] or 'No recommendation provided.'}\n\n"
+                    f"[bold]Tags:[/bold] {tags_str}\n",
+                    title=f"Vulnerability #{id}",
+                    expand=False
+                ))
+                
+                if vuln.get("code_sample"):
+                    console.print("[bold]Vulnerable Code Example:[/bold]")
+                    console.print(Panel(vuln["code_sample"], title="Code Sample"))
+                
+                if vuln.get("references"):
+                    console.print("[bold]References:[/bold]")
+                    for ref in vuln["references"].split("\n"):
+                        if ref.strip():
+                            console.print(f"- {ref.strip()}")
+            
+            elif cmd == "check":
+                file_path = query
+                if not file_path:
+                    file_path = Prompt.ask("Enter the path to the Solidity contract file")
+                
+                try:
+                    with open(file_path, 'r') as f:
+                        contract_code = f.read()
+                    
+                    console.print(f"Checking contract at '{file_path}' for known vulnerabilities...")
+                    
+                    # Extract basic info about the contract
+                    contract_info = SolidityParser.extract_contract_info(contract_code)
+                    console.print(Panel(
+                        f"[bold]Contracts:[/bold] {', '.join(contract_info.get('contracts', ['Unknown']))}\n"
+                        f"[bold]Imports:[/bold] {', '.join(contract_info.get('imports', ['None']))}\n"
+                        f"[bold]Libraries:[/bold] {', '.join(contract_info.get('libraries', ['None']))}\n"
+                        f"[bold]Inheritance:[/bold] {', '.join(contract_info.get('inheritance', ['None']))}",
+                        title="Contract Information",
+                        expand=False
+                    ))
+                    
+                    # Check for vulnerabilities using the database
+                    detected_vulnerabilities = db.check_code_for_vulnerabilities(contract_code)
+                    
+                    if not detected_vulnerabilities:
+                        console.print("[green]No known vulnerabilities detected.[/green]")
+                        console.print("[yellow]Note: Absence of detected vulnerabilities does not guarantee security.[/yellow]")
+                        return
+                    
+                    console.print(f"[red]Found {len(detected_vulnerabilities)} potential vulnerabilities:[/red]")
+                    
+                    table = Table(title="Potential Vulnerabilities")
+                    table.add_column("ID", style="dim")
+                    table.add_column("Name")
+                    table.add_column("Severity")
+                    table.add_column("Category")
+                    
+                    for vuln in detected_vulnerabilities:
+                        # Set color based on severity
+                        severity_color = Colors.MEDIUM_PRIORITY
+                        if vuln["severity"] == "critical" or vuln["severity"] == "high":
+                            severity_color = Colors.HIGH_PRIORITY
+                        elif vuln["severity"] == "low" or vuln["severity"] == "info":
+                            severity_color = Colors.LOW_PRIORITY
+                        
+                        table.add_row(
+                            str(vuln["id"]),
+                            vuln["name"],
+                            f"[{severity_color}]{vuln['severity']}[/{severity_color}]",
+                            vuln["category_name"] or "Uncategorized"
+                        )
+                    
+                    console.print(table)
+                    console.print("[yellow]Note: These are pattern-based detections and may include false positives.[/yellow]")
+                    console.print("[yellow]Use 'vulndb show <id>' to get more details about each vulnerability.[/yellow]")
+                    
+                except FileNotFoundError:
+                    console.print(f"[red]File not found: {file_path}[/red]")
+                except Exception as e:
+                    console.print(f"[red]Error analyzing contract: {str(e)}[/red]")
+            
+            else:
+                console.print("[red]Invalid command. Use: vulndb initialize|search|list|show|check[/red]")
+            
+            # Close the database connection
+            db.close()
+            
+        except Exception as e:
+            console.print(f"[red]Error accessing vulnerability database: {str(e)}[/red]")
     
     @app.command("quit")
     def quit_app():
