@@ -26,7 +26,7 @@ class Colors:
 @dataclass
 class AppConfig:
     """Application configuration"""
-    APP_NAME: str = "SmartContract Audit Companion"
+    APP_NAME: str = "Bug Bounty Companion"
     VERSION: str = "0.1.0"
     
     # Paths
@@ -41,17 +41,18 @@ class AppConfig:
     ANTHROPIC_API_KEY: str = os.environ.get("ANTHROPIC_API_KEY", "")
     ANTHROPIC_MODEL: str = "claude-3-5-sonnet-20241022"
     
-    # Whitelist
-    DEFAULT_CSV_PATH: pathlib.Path = APP_DIR / "whitelist.csv"
+    # Alpha Phase
+    DEFAULT_CSV_PATH: pathlib.Path = APP_DIR / "alpha_testers.csv"
     
     # Marketing
-    WHITELIST_PROMPT: str = ("Join our exclusive whitelist for early access to premium features! "
-                             "Limited spots available!")
-    SCARCITY_MESSAGE: str = "Only 100 security researchers will get VIP early access! Act now!"
-    EARLY_ACCESS_BENEFITS: str = ("✓ Priority AI report generation\n"
+    ALPHA_PHASE_PROMPT: str = ("Join our exclusive Alpha Phase for early access and help shape the Bug Bounty Companion! "
+                              "Limited spots available for security researchers!")
+    SCARCITY_MESSAGE: str = "Only 20 security researchers will get early access to test our MCP technology! Act now!"
+    EARLY_ACCESS_BENEFITS: str = ("✓ Access to our MCP (Model Context Protocol) for finding bugs\n"
+                                 "✓ Support for multiple smart contract languages\n"
+                                 "✓ Priority AI report generation\n"
                                  "✓ Advanced CVSS calculation templates\n"
-                                 "✓ Exclusive vulnerability templates\n"
-                                 "✓ Premium support channel access")
+                                 "✓ Direct feedback channel to the developer")
     MVP_DESCRIPTION: str = ("Streamline your smart contract audit workflow with AI-assisted "
                            "analysis, comprehensive task tracking, and professional "
                            "vulnerability reporting. Built by security researchers for "

@@ -1,76 +1,64 @@
-{% extends "base.html" %}
-
-{% block title %}Bug Bounty Companion - Security Research Tool{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
-<section class="hero">
-    <h1>Bug Bounty Companion</h1>
-    <p>Streamline your smart contract audit workflow with AI-assisted analysis, comprehensive task tracking, and professional vulnerability reporting. Built by security researchers for security researchers.</p>
-</section>
+<header class="header">
+  <h1 class="main-title glitch" data-text="BUG BOUNTY COMPANION">BUG BOUNTY COMPANION</h1>
+  <p class="subtitle">A CLI-based tool for security researchers to organize their workflow</p>
+</header>
 
-<section class="features">
-    <h2>Key Features</h2>
-    <div class="feature-grid">
-        <div class="feature-card">
-            <h3>Anthropic AI Integration</h3>
-            <p>Leverage cutting-edge AI to analyze smart contracts for security vulnerabilities, optimization opportunities, and business logic issues.</p>
-        </div>
-        <div class="feature-card">
-            <h3>CVSS Scoring</h3>
-            <p>Calculate accurate vulnerability severity scores using the industry-standard CVSS framework, complete with vector string generation.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Vulnerability Database</h3>
-            <p>Access a comprehensive database of common smart contract vulnerabilities, including detection patterns and remediation advice.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Workflow Management</h3>
-            <p>Organize audit programs, track tasks, and document findings in an intuitive, terminal-based interface with color-coded information.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Terminal-Based UI</h3>
-            <p>Enjoy a distraction-free, keyboard-driven experience optimized for the way security researchers work.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Detailed Reporting</h3>
-            <p>Generate professional vulnerability reports with markdown support for easy export to clients and stakeholders.</p>
-        </div>
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-title">SYSTEM</div>
+    <div class="terminal-dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
     </div>
-</section>
+  </div>
+  
+  <p>Streamline your smart contract audit workflow with AI-assisted analysis, comprehensive task tracking, and professional vulnerability reporting.</p>
+  <p>Built by security researchers for security researchers.</p>
+  
+  <ul class="features-list">
+    <li>Anthropic AI integration for vulnerability analysis</li>
+    <li>CVSS scoring and vulnerability tracking</li>
+    <li>Comprehensive audit program and task management</li>
+    <li>Local database of common smart contract vulnerabilities</li>
+    <li>Detailed findings reporting</li>
+    <li>Multiple smart contract languages support (Solidity, Move)</li>
+    <li>Zero-knowledge circuit analysis (Noir, Circom 2)</li>
+  </ul>
+</div>
 
-<section class="whitelist">
-    <div class="whitelist-content">
-        <h2>Join Our Exclusive Whitelist</h2>
-        <p>Get early access to premium features before they're available to the public.</p>
-        
-        <div class="whitelist-benefits">
-            <ul>
-                <li>Priority AI report generation</li>
-                <li>Advanced CVSS calculation templates</li>
-                <li>Exclusive vulnerability templates</li>
-                <li>Premium support channel access</li>
-            </ul>
-        </div>
-        
-        <div class="scarcity">
-            Only 100 security researchers will get VIP early access! Act now!
-        </div>
-        
-        <form class="signup-form" method="POST" action="{{ url_for('signup') }}">
-            <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" name="email" required placeholder="your@email.com">
-            </div>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Jane Doe">
-            </div>
-            <div class="form-group">
-                <label for="organization">Organization</label>
-                <input type="text" id="organization" name="organization" placeholder="Company or Project">
-            </div>
-            <button type="submit" class="btn btn-primary">Join Whitelist</button>
-        </form>
+<section class="cta-section">
+  <h2 class="cta-title">JOIN THE ALPHA PHASE<span class="cursor"></span></h2>
+  
+  <div class="alpha-phase">
+    <p>Join our exclusive Alpha Phase for early access and help shape the Bug Bounty Companion!</p>
+    <p>Only <strong>20 security researchers</strong> will get early access to test our <span class="tech-highlight">MCP</span> technology! Act now!</p>
+    
+    <ul class="features-list">
+      <li>Access to our MCP (Model Context Protocol) for finding bugs</li>
+      <li>Support for multiple smart contract languages</li>
+      <li>Priority AI report generation</li>
+      <li>Advanced CVSS calculation templates</li>
+      <li>Direct feedback channel to the developer</li>
+    </ul>
+  </div>
+  
+  <form class="signup-form" action="{{ url_for('signup') }}" method="post">
+    <div class="form-group">
+      <input type="email" name="email" placeholder="YOUR EMAIL" required class="input-field">
     </div>
+    <div class="form-group">
+      <input type="text" name="name" placeholder="YOUR NAME (OPTIONAL)" class="input-field">
+    </div>
+    <div class="form-group">
+      <input type="text" name="organization" placeholder="YOUR ORGANIZATION (OPTIONAL)" class="input-field">
+    </div>
+    <button type="submit" class="btn">SECURE YOUR SPOT</button>
+  </form>
+  
+  <div class="scarcity-msg">ONLY 20 PLACES AVAILABLE - REGISTER NOW</div>
 </section>
 {% endblock %}

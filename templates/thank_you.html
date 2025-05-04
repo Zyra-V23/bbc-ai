@@ -1,13 +1,36 @@
-{% extends "base.html" %}
-
-{% block title %}Thank You - Smart Contract Audit Companion{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
-<section class="thank-you">
-    <div class="icon-large">✓</div>
-    <h1>Thank You!</h1>
-    <p>You've been added to our exclusive whitelist for early access to the Smart Contract Audit Companion.</p>
-    <p>We'll notify you as soon as the alpha version is ready for testing.</p>
-    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
-</section>
+<header class="header">
+  <h1 class="main-title glitch" data-text="ACCESS GRANTED">ACCESS GRANTED</h1>
+</header>
+
+<div class="thank-you">
+  <h2>[CONNECTION ESTABLISHED]</h2>
+  <div class="icon-large">✓</div>
+  
+  <h3>ALPHA PHASE ACCESS CONFIRMED</h3>
+  <p>Thank you for joining our exclusive Alpha Phase testing group!</p>
+  <p>You're now one of the 20 security researchers who will get early access to our MCP technology.</p>
+  
+  <div class="terminal-box" style="margin-top: 2rem; text-align: left;">
+    <div class="terminal-header">
+      <div class="terminal-title">SYSTEM MESSAGE</div>
+      <div class="terminal-dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+    
+    <p>> INITIALIZATION COMPLETE</p>
+    <p>> REGISTERING NEW USER...</p>
+    <p>> USER REGISTRATION SUCCESSFUL</p>
+    <p>> PREPARING ACCESS CREDENTIALS...</p>
+    <p>> YOU WILL RECEIVE FURTHER INSTRUCTIONS SOON</p>
+    <p>> END OF TRANSMISSION<span class="cursor"></span></p>
+  </div>
+  
+  <a href="{{ url_for('index') }}" class="btn" style="display: inline-block; margin-top: 2rem;">RETURN TO MAIN TERMINAL</a>
+</div>
 {% endblock %}

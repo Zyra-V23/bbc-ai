@@ -349,16 +349,16 @@ else:
         else:
             console.print("[red]Invalid command. Use: finding list|add|show[/red]")
     
-    @app.command("whitelist")
-    def whitelist_commands(cmd: str = typer.Argument(..., help="Command: add, list, export"),
+    @app.command("alpha-phase")
+    def alpha_phase_commands(cmd: str = typer.Argument(..., help="Command: add, list, export"),
                          filepath: Optional[str] = typer.Argument(None, help="Export filepath")):
-        """Manage marketing whitelist"""
+        """Manage alpha phase participants"""
         if cmd == "add":
             console.print(Panel(
-                f"[bold]{config.WHITELIST_PROMPT}[/bold]\n\n"
+                f"[bold]{config.ALPHA_PHASE_PROMPT}[/bold]\n\n"
                 f"{config.SCARCITY_MESSAGE}\n\n"
                 f"{config.EARLY_ACCESS_BENEFITS}",
-                title="Join the Whitelist",
+                title="Join the Alpha Phase",
                 expand=False
             ))
             
@@ -375,13 +375,13 @@ else:
             success = True
             
             if success:
-                console.print(f"[green]Thanks! {email} has been added to our exclusive whitelist.[/green]")
-                console.print("You'll be notified when premium features become available!")
+                console.print(f"[green]Thanks! {email} has been added to our Alpha Phase testers.[/green]")
+                console.print("You'll be notified when we're ready to start testing our MCP technology!")
             else:
-                console.print(f"[red]Failed to add to whitelist. Please try again later.[/red]")
+                console.print(f"[red]Failed to add to Alpha Phase. Please try again later.[/red]")
                 
         elif cmd == "list":
-            console.print("Listing whitelist contacts...")
+            console.print("Listing Alpha Phase participants...")
             
             # Placeholder for database query
             contacts = [
@@ -391,10 +391,10 @@ else:
             ]
             
             if not contacts:
-                console.print("[yellow]No whitelist contacts found.[/yellow]")
+                console.print("[yellow]No Alpha Phase participants found.[/yellow]")
                 return
             
-            table = Table(title="Whitelist Contacts")
+            table = Table(title="Alpha Phase Participants")
             table.add_column("ID", style="dim")
             table.add_column("Email", style="cyan")
             table.add_column("Name")
@@ -411,7 +411,7 @@ else:
             console.print(table)
             
         elif cmd == "export" and filepath is not None:
-            console.print(f"Exporting whitelist to {filepath}...")
+            console.print(f"Exporting Alpha Phase participants to {filepath}...")
             
             # Placeholder for database query and CSV export
             contact_count = 3
@@ -433,7 +433,7 @@ else:
                 console.print(f"[red]Export failed: {str(e)}[/red]")
             
         else:
-            console.print("[red]Invalid command. Use: whitelist add|list|export[/red]")
+            console.print("[red]Invalid command. Use: alpha-phase add|list|export[/red]")
     
     @app.command("analyze")
     def analyze_contract():

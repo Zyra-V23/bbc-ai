@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Smart Contract Audit Companion with Anthropic AI Integration
+Bug Bounty Companion with Anthropic AI Integration
 A CLI-based tool for security researchers to organize their workflow
 """
 
@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Create Flask app
 flask_app = Flask(__name__)
-flask_app.secret_key = os.environ.get("SESSION_SECRET", "dev_key_for_smart_contract_audit_companion")
+flask_app.secret_key = os.environ.get("SESSION_SECRET", "dev_key_for_bug_bounty_companion")
 
 # Configure database
 flask_app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
@@ -77,7 +77,7 @@ def signup():
         # Check if email already exists
         existing_signup = EmailSignup.query.filter_by(email=email).first()
         if existing_signup:
-            flash('You are already on our whitelist!', 'info')
+            flash('You are already registered for our Alpha Phase!', 'info')
             return redirect(url_for('index'))
         
         # Add new signup
@@ -89,7 +89,7 @@ def signup():
         db.session.add(signup)
         db.session.commit()
         
-        flash('Thanks for joining our whitelist!', 'success')
+        flash('Thanks for joining our Alpha Phase!', 'success')
         return redirect(url_for('thank_you'))
     
     except Exception as e:
