@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="header">
+  <h1 class="main-title glitch" data-text="ALPHA PHASE REGISTRATIONS">ALPHA PHASE REGISTRATIONS</h1>
+</header>
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-title">SYSTEM</div>
+    <div class="terminal-dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+  
+  <div class="admin-controls">
+    <a href="{{ url_for('admin_logout') }}" class="btn">LOGOUT</a>
+    <a href="#" class="btn" onclick="exportToCSV()">EXPORT TO CSV</a>
+  </div>
+  
+  <p>Total registrations: <strong>{{ signups|length }}</strong></p>
+  
+  <div class="email-list">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Organization</th>
+          <th>Registration Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for signup in signups %}
+        <tr>
+          <td>{{ signup.id }}</td>
+          <td>{{ signup.email }}</td>
+          <td>{{ signup.name or '-' }}</td>
+          <td>{{ signup.organization or '-' }}</td>
+          <td>{{ signup.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <script>
+    function exportToCSV() {
+      // Create CSV content
+      let csv = 'ID,Email,Name,Organization,Registration Date\n';
+      
+      {% for signup in signups %}
+      csv += '{{ signup.id }},"{{ signup.email }}","{{ signup.name|default('') }}","{{ signup.organization|default('') }}","{{ signup.created_at.strftime('%Y-%m-%d %H:%M:%S') }}"\n';
+      {% endfor %}
+      
+      // Create download link
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'alpha_registrations.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+  
+  <style>
+    .admin-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .email-list {
+      width: 100%;
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #ff6600;
+      background-color: #1a1a1a;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #444;
+    }
+    
+    th {
+      background-color: #333;
+      color: #ffcc00;
+    }
+    
+    tr:hover {
+      background-color: #333;
+    }
+  </style>
+</div>
+{% endblock %}

@@ -51,6 +51,14 @@ class EmailSignup(db.Model):
 with flask_app.app_context():
     db.create_all()
 
+# Configuration
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "bug_bounty_admin")
+
+# Helper functions
+def is_authenticated():
+    """Check if user is authenticated"""
+    return session.get('authenticated', False)
+
 # Routes
 @flask_app.route('/')
 def index():
@@ -102,6 +110,38 @@ def signup():
 def thank_you():
     """Thank you page after signup"""
     return render_template('thank_you.html')
+
+# Admin routes
+@flask_app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    """Admin login page"""
+    if request.method == 'POST':
+        password = request.form.get('password')
+        
+        if password == ADMIN_PASSWORD:
+            session['authenticated'] = True
+            return redirect(url_for('admin_emails'))
+        else:
+            flash('Invalid password', 'error')
+    
+    return render_template('admin_login.html')
+
+@flask_app.route('/admin/logout')
+def admin_logout():
+    """Admin logout"""
+    session.pop('authenticated', None)
+    return redirect(url_for('admin_login'))
+
+@flask_app.route('/admin/emails')
+def admin_emails():
+    """Admin page to list all email signups"""
+    if not is_authenticated():
+        return redirect(url_for('admin_login'))
+    
+    # Get all email signups
+    signups = EmailSignup.query.order_by(EmailSignup.created_at.desc()).all()
+    
+    return render_template('admin_emails.html', signups=signups)
 
 # Make this file callable as a Flask app for gunicorn
 app = flask_app
