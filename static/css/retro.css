@@ -382,7 +382,7 @@ body {
 }
 
 .tech-highlight {
-  color: #FFD700;
+  color: #00CCFF; /* Cambio de amarillo (#FFD700) a azul celeste */
   font-weight: bold;
 }
 
@@ -400,7 +400,7 @@ body {
 }
 
 .features-list li:nth-last-child(1) {
-  color: #FFD700;
+  color: #00CCFF; /* Cambiado a azul celeste */
   animation: coming-soon-blink 2s infinite;
 }
 
@@ -413,6 +413,38 @@ body {
   0% { text-shadow: 0 0 5px rgba(255, 69, 0, 0.5); }
   50% { text-shadow: 0 0 15px rgba(255, 69, 0, 0.8), 0 0 20px rgba(255, 69, 0, 0.5); }
   100% { text-shadow: 0 0 5px rgba(255, 69, 0, 0.5); }
+}
+
+/* Flechas animadas */
+.arrows-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.arrow {
+  color: #FF5500;
+  font-size: 1.5rem;
+  animation: bounce 1s infinite alternate;
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+
+.arrow:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.arrow:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(10px);
+  }
 }
 
 /* Flash messages */
