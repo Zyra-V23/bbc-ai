@@ -11,10 +11,10 @@
   --light-color: #F1F5F9; /* Light text */
   --bg-color: #07080F; /* Almost black blue */
   --card-color: rgba(20, 22, 45, 0.75); /* Dark blue for cards with transparency */
-  --glow-pink: 0 0 7px #ff2d95, 0 0 10px #ff2d95, 0 0 21px #ff2d95; /* Neon pink glow */
-  --glow-blue: 0 0 7px #2DC9FF, 0 0 10px #2DC9FF, 0 0 21px #2DC9FF; /* Neon blue glow */
-  --glow-purple: 0 0 7px #9D24FF, 0 0 10px #9D24FF, 0 0 21px #9D24FF; /* Neon purple glow */
-  --glow-success: 0 0 7px #00FF66, 0 0 10px #00FF66, 0 0 21px #00FF66; /* Neon green glow */
+  --glow-pink: 0 0 5px rgba(255, 45, 149, 0.5), 0 0 8px rgba(255, 45, 149, 0.3); /* Neon pink glow - reduced intensity */
+  --glow-blue: 0 0 5px rgba(45, 201, 255, 0.5), 0 0 8px rgba(45, 201, 255, 0.3); /* Neon blue glow - reduced intensity */
+  --glow-purple: 0 0 5px rgba(157, 36, 255, 0.5), 0 0 8px rgba(157, 36, 255, 0.3); /* Neon purple glow - reduced intensity */
+  --glow-success: 0 0 5px rgba(0, 255, 102, 0.5), 0 0 8px rgba(0, 255, 102, 0.3); /* Neon green glow - reduced intensity */
 }
 
 * {
@@ -71,7 +71,7 @@ header {
   color: transparent;
   text-transform: uppercase;
   letter-spacing: 2px;
-  text-shadow: 0 0 5px rgba(255, 45, 149, 0.5), 0 0 10px rgba(45, 201, 255, 0.5);
+  text-shadow: 0 0 3px rgba(255, 45, 149, 0.3), 0 0 5px rgba(45, 201, 255, 0.3);
 }
 
 .hero p {
@@ -145,8 +145,9 @@ header {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: var(--secondary-color);
-  text-shadow: var(--glow-blue);
+  text-shadow: 0 0 3px rgba(45, 201, 255, 0.2);
   letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .feature-card p {
@@ -188,7 +189,8 @@ header {
   color: var(--primary-color);
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: var(--glow-pink);
+  text-shadow: 0 0 3px rgba(255, 45, 149, 0.2);
+  font-weight: 700;
 }
 
 .whitelist-content {
@@ -402,7 +404,8 @@ footer {
   color: var(--success-color);
   text-transform: uppercase;
   letter-spacing: 2px;
-  text-shadow: var(--glow-success);
+  text-shadow: 0 0 3px rgba(0, 255, 102, 0.3);
+  font-weight: 700;
 }
 
 .thank-you p {
@@ -417,13 +420,13 @@ footer {
   font-size: 5rem;
   color: var(--success-color);
   margin-bottom: 2.5rem;
-  text-shadow: var(--glow-success);
+  text-shadow: 0 0 3px rgba(0, 255, 102, 0.3);
   animation: glow 2s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
   from { opacity: 0.8; }
-  to { opacity: 1; text-shadow: 0 0 20px rgba(0, 255, 102, 0.9), 0 0 30px rgba(0, 255, 102, 0.7); }
+  to { opacity: 1; text-shadow: 0 0 5px rgba(0, 255, 102, 0.4), 0 0 10px rgba(0, 255, 102, 0.3); }
 }
 
 /* Responsive */
