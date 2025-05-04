@@ -58,7 +58,26 @@ body {
 .subtitle {
   font-size: 1.5rem;
   opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.creator-info {
+  font-size: 1.1rem;
   margin-bottom: 1rem;
+  color: #ffcc00;
+}
+
+.creator-link {
+  color: #ffcc00;
+  text-decoration: none;
+  border-bottom: 1px dotted #ffcc00;
+  transition: all 0.3s ease;
+}
+
+.creator-link:hover {
+  color: #ffffff;
+  border-bottom: 1px solid #ffffff;
+  text-shadow: 0 0 5px #ffcc00;
 }
 
 .terminal-box {
