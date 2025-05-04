@@ -679,9 +679,9 @@ else:
                     console.print("[bold]Vulnerable Code Example:[/bold]")
                     console.print(Panel(vuln["code_sample"], title="Code Sample"))
                 
-                if vuln.get("references"):
+                if vuln.get("reference_links"):
                     console.print("[bold]References:[/bold]")
-                    for ref in vuln["references"].split("\n"):
+                    for ref in vuln["reference_links"].split("\n"):
                         if ref.strip():
                             console.print(f"- {ref.strip()}")
             
