@@ -1,4 +1,6 @@
-## BUG BOUNTY COMPANION
+## BUG BOUNTY COMPANION 
+
+Made by Zyra-V23
 
 A CLI-based tool for security researchers to manage and organize their smart contract audit workflow, with integrated AI-powered analysis.
 
@@ -61,14 +63,8 @@ python cli_runner.py program list
 # Show details of a specific program
 python cli_runner.py program show 1
 
-# List tasks for a specific program
-python cli_runner.py task list 1
-
 # List all findings
 python cli_runner.py finding list
-
-# Update a task status
-python cli_runner.py task status 2 completed
 
 # Calculate a CVSS score
 python cli_runner.py cvss
