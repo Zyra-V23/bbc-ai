@@ -363,20 +363,13 @@ body {
 }
 
 .tech-highlight {
-  color: #00FFFF;
+  color: #FFD700;
   font-weight: bold;
 }
 
 .features-list li:nth-last-child(1) {
   color: #FFD700;
   animation: coming-soon-blink 2s infinite;
-}
-
-.features-list li:nth-last-child(2) {
-  color: #FF4500;
-  font-weight: bold;
-  animation: efficiency-pulse 3s infinite;
-  text-shadow: 0 0 5px rgba(255, 69, 0, 0.5);
 }
 
 @keyframes coming-soon-blink {
