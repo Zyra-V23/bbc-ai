@@ -354,6 +354,16 @@ body {
   font-weight: bold;
 }
 
+.features-list li:last-child {
+  color: #FFD700;
+  animation: coming-soon-blink 2s infinite;
+}
+
+@keyframes coming-soon-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
 /* Flash messages */
 .flash-messages {
   margin-bottom: 20px;
