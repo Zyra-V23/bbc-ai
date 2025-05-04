@@ -2,17 +2,19 @@
 :root {
   --primary-color: #FF2D95; /* Neon pink */
   --secondary-color: #2DC9FF; /* Neon blue */
-  --accent-color: #9D24FF; /* Purple */
+  --accent-color: #9D24FF; /* Neon purple */
   --danger-color: #FF4545; /* Bright red */
-  --success-color: #18FFB2; /* Neon green */
-  --warning-color: #FFC233; /* Bright yellow */
+  --success-color: #00FF66; /* Neon green - brighter for the background image */
+  --warning-color: #FFC233; /* Bright yellow/gold */
   --dark-color: #0F111F; /* Deep dark blue */
-  --gray-color: #7786A7; /* Blue-tinged gray */
+  --gray-color: #8B9FC5; /* Lighter blue-tinged gray for better contrast on background */
   --light-color: #F1F5F9; /* Light text */
   --bg-color: #07080F; /* Almost black blue */
-  --card-color: #14162D; /* Dark blue for cards */
+  --card-color: rgba(20, 22, 45, 0.75); /* Dark blue for cards with transparency */
   --glow-pink: 0 0 7px #ff2d95, 0 0 10px #ff2d95, 0 0 21px #ff2d95; /* Neon pink glow */
   --glow-blue: 0 0 7px #2DC9FF, 0 0 10px #2DC9FF, 0 0 21px #2DC9FF; /* Neon blue glow */
+  --glow-purple: 0 0 7px #9D24FF, 0 0 10px #9D24FF, 0 0 21px #9D24FF; /* Neon purple glow */
+  --glow-success: 0 0 7px #00FF66, 0 0 10px #00FF66, 0 0 21px #00FF66; /* Neon green glow */
 }
 
 * {
@@ -26,7 +28,7 @@ body {
   line-height: 1.6;
   color: var(--light-color);
   background-color: var(--bg-color);
-  background-image: linear-gradient(rgba(7, 8, 15, 0.85), rgba(7, 8, 15, 0.85)), url('/static/images/cyberpunk_bg.png');
+  background-image: linear-gradient(rgba(7, 8, 15, 0.55), rgba(7, 8, 15, 0.7)), url('/static/images/cyberpunk_background.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -379,7 +381,7 @@ footer {
   position: absolute;
   width: 150px;
   height: 150px;
-  background: radial-gradient(circle, rgba(24, 255, 178, 0.2) 0%, rgba(24, 255, 178, 0) 70%);
+  background: radial-gradient(circle, rgba(0, 255, 102, 0.2) 0%, rgba(0, 255, 102, 0) 70%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -400,7 +402,7 @@ footer {
   color: var(--success-color);
   text-transform: uppercase;
   letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(24, 255, 178, 0.7);
+  text-shadow: var(--glow-success);
 }
 
 .thank-you p {
@@ -415,13 +417,13 @@ footer {
   font-size: 5rem;
   color: var(--success-color);
   margin-bottom: 2.5rem;
-  text-shadow: 0 0 15px rgba(24, 255, 178, 0.8);
+  text-shadow: var(--glow-success);
   animation: glow 2s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
-  from { text-shadow: 0 0 10px rgba(24, 255, 178, 0.5); }
-  to { text-shadow: 0 0 20px rgba(24, 255, 178, 0.9), 0 0 30px rgba(24, 255, 178, 0.7); }
+  from { opacity: 0.8; }
+  to { opacity: 1; text-shadow: 0 0 20px rgba(0, 255, 102, 0.9), 0 0 30px rgba(0, 255, 102, 0.7); }
 }
 
 /* Responsive */
