@@ -26,7 +26,6 @@
     <li>Comprehensive audit program and task management</li>
     <li>Local database of smart contract vulnerabilities</li>
     <li>Optimized workflow for popular IDEs: Cursor, Windurf, Cline, and more</li>
-    <li>After MONTHS of work, our cracked dev has achieved the perfect blend of efficiency and security, reducing agent overcontext issues by 90%</li>
     <li>Multiple smart contract languages support (Solidity, Move)</li>
     <li>COMING SOON: Zero-knowledge circuit creator (Noir, Circom 2) + analyzer</li>
   </ul>
@@ -48,7 +47,9 @@
     </ul>
   </div>
   
-  <form class="signup-form" action="{{ url_for('signup') }}" method="post">
+  <button id="signup-toggle" class="btn">SECURE YOUR SPOT</button>
+  
+  <form id="signup-form" class="signup-form hidden" action="{{ url_for('signup') }}" method="post">
     <div class="form-group">
       <input type="email" name="email" placeholder="YOUR EMAIL" required class="input-field">
     </div>
@@ -58,9 +59,17 @@
     <div class="form-group">
       <input type="text" name="organization" placeholder="YOUR ORGANIZATION (OPTIONAL)" class="input-field">
     </div>
-    <button type="submit" class="btn">SECURE YOUR SPOT</button>
+    <button type="submit" class="btn submit-btn">SUBMIT</button>
   </form>
   
   <div class="scarcity-msg">ONLY 20 PLACES AVAILABLE - REGISTER NOW</div>
+  
+  <script>
+    document.getElementById('signup-toggle').addEventListener('click', function() {
+      const form = document.getElementById('signup-form');
+      form.classList.toggle('hidden');
+      this.classList.toggle('hidden');
+    });
+  </script>
 </section>
 {% endblock %}

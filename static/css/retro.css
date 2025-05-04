@@ -188,6 +188,19 @@ body {
   background-color: var(--button-hover);
 }
 
+.submit-btn {
+  background-color: #FF5500;
+  border-color: #FF3300;
+}
+
+.submit-btn:hover {
+  background-color: #FF3300;
+}
+
+.hidden {
+  display: none !important;
+}
+
 .scarcity-msg {
   margin-top: 1rem;
   font-size: 1.2rem;
@@ -359,7 +372,7 @@ body {
   animation: coming-soon-blink 2s infinite;
 }
 
-.features-list li:nth-last-child(3) {
+.features-list li:nth-last-child(2) {
   color: #FF4500;
   font-weight: bold;
   animation: efficiency-pulse 3s infinite;
