@@ -64,20 +64,20 @@ body {
 .creator-info {
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: #ffcc00;
+  color: #00CCFF; /* Cambiado a azul celeste */
 }
 
 .creator-link {
-  color: #ffcc00;
+  color: #00CCFF; /* Cambiado a azul celeste */
   text-decoration: none;
-  border-bottom: 1px dotted #ffcc00;
+  border-bottom: 1px dotted #00CCFF;
   transition: all 0.3s ease;
 }
 
 .creator-link:hover {
   color: #ffffff;
   border-bottom: 1px solid #ffffff;
-  text-shadow: 0 0 5px #ffcc00;
+  text-shadow: 0 0 5px #00CCFF; /* Cambiado a azul celeste */
 }
 
 .terminal-box {
