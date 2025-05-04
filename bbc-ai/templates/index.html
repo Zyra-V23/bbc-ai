@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="header">
+  <h1 class="main-title glitch" data-text="BUG BOUNTY COMPANION">BUG BOUNTY COMPANION</h1>
+  <p class="subtitle">A powerful CLI tool for security researchers using <span class="tech-highlight">MCP technology</span> for smart contract analysis and reporting</p>
+  <p class="creator-info">Made by: <a href="https://twitter.com/ZyraV23" target="_blank" class="creator-link">ZyraV23</a></p>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const logo = document.querySelector('.main-title');
+    let blinkTimeout;
+    if (logo) {
+      logo.addEventListener('mouseleave', function() {
+        logo.classList.remove('blink-blue');
+        void logo.offsetWidth;
+        logo.classList.add('blink-blue');
+        clearTimeout(blinkTimeout);
+        blinkTimeout = setTimeout(() => logo.classList.remove('blink-blue'), 1200);
+      });
+    }
+  });
+</script>
+
+<section class="cta-section">
+  <h2 class="cta-title">JOIN THE FUTURE OF WEB3 AUDITS<span class="cursor"></span></h2>
+  
+  <div class="alpha-phase">
+    <p><strong>Bug Bounty Companion</strong> is now <span class="tech-highlight">open source</span>!</p>
+    <ul class="features-list">
+      <li>We invite all <strong>bug bounty hunters</strong> and <strong>smart contract auditors</strong> to collaborate and shape the future of web3 security audits.</li>
+      <li>Contribute your expertise, ideas, and code to help build the most powerful open-source audit toolkit for the decentralized world.</li>
+      <li>Model Context Protocol integration with GitHub for secure repository access</li>
+      <li>Advanced export options with proof-of-concept code blocks</li>
+      <li>Direct feedback channel to the developer and the community</li>
+    </ul>
+    <p class="bonus-highlight">Let's build the next generation of web3 security tools together!</p>
+  </div>
+  
+  <div class="arrows-container">
+    <div class="arrow">⬇</div>
+    <div class="arrow">⬇</div>
+    <div class="arrow">⬇</div>
+  </div>
+  
+  <button id="github-link" class="btn" onclick="window.open('https://www.github.com/Zyra-V23/bbc-ai', '_blank')">VIEW ON GITHUB</button>
+  
+  <div class="scarcity-msg">Open to all contributors worldwide - Join us now!</div>
+  
+  <script>
+    // No signup form logic needed
+  </script>
+</section>
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-title">FEATURES</div>
+    <div class="terminal-dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+  
+  <ul class="features-list">
+    <li>AI-assisted report generation with customizable templates</li>
+    <li>Streamlined workflow for tailored results</li>
+    <li>Support for Solidity, Move, Vyper, and Rust</li>
+    <li>Seamless integration with Cursor, Windurf, and Cline IDEs</li>
+    <li>Track findings and generate exportable proof-of-concept code</li>
+    <li><span class="coming-soon-blue">COMING SOON: Zero-knowledge circuit analyzer (Noir, Circom 2)</span></li>
+    <li><span class="coming-soon-blue">COMING SOON: Model Context Protocol (MCP) integration for secure repository access</span></li>
+    <li><span class="coming-soon-blue">COMING SOON: GameFi based games for the CLI/App (leaderboards etc)</span></li>
+  </ul>
+</div>
+
+<div class="zk-project-box">
+  <div class="zk-project-content">
+    <div class="zk-title">Zero Knowledge Project</div>
+    <p>Check out my personal ZK project: U-ZK Void</p>
+    <a href="https://github.com/Zyra-V23/ZKUzumaki" target="_blank" class="zk-badge">ZK RESEARCH</a>
+  </div>
+</div>
+{% endblock %}

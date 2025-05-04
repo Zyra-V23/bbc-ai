@@ -1,0 +1,8 @@
+[project]
+name = "bbc-ai"
+version = "0.1.0"
+description = "Smart Contract Audit Companion"
+authors = [{name = "ZyraV23"}]
+
+[project.scripts]
+bbc = "bbc_ai.cli.bbc_cli:app" 

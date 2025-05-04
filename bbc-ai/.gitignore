@@ -1,0 +1,56 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Egg info
+*.egg-info/
+repl_nix_workspace.egg-info/
+
+# Environment variables
+.env
+.env.*
+
+# VSCode settings
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Python test cache
+.pytest_cache/
+
+# Build
+build/
+dist/
+
+# Logs
+*.log
+
+# Node modules (if any)
+node_modules/
+
+# Lock files
+uv.lock
+
+# Attached assets (if not needed in repo)
+attached_assets/
+
+# Misc
+*.swp
+*.swo
+
+# Ignore sample contracts if not needed
+sample_contracts/
+
+# Ignore sensitive or secret files only
+.env
+.env.*
+.DS_Store 

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# 1. Crear carpeta docs si no existe
+echo "[bbc] Creando carpeta docs..."
+mkdir -p docs
+
+echo "[bbc] Verificando instalación de Python..."
+if ! command -v python3 &> /dev/null; then
+    echo "[bbc] Python3 no encontrado. Instalando..."
+    sudo apt-get update && sudo apt-get install -y python3
+fi
+
+echo "[bbc] Verificando instalación de pip..."
+if ! command -v pip3 &> /dev/null; then
+    echo "[bbc] pip3 no encontrado. Instalando..."
+    sudo apt-get install -y python3-pip
+fi
+
+echo "[bbc] Instalando dependencias de Python..."
+pip3 install -r requeriments.txt
+
+# 4. Crear .env.example con variables de entorno de ejemplo
+echo "[bbc] Creando archivo .env.example..."
+cat > .env.example <<EOL
+# Variables de entorno de ejemplo para BBC
+DATABASE_URL=sqlite:///mydatabase.db
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+SESSION_SECRET=your_session_secret_here
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin_password
+EOL
+
+echo "[bbc] Setup completo. Puedes copiar .env.example a .env y personalizarlo." 
