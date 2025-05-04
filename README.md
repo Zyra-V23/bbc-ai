@@ -1,4 +1,4 @@
-# Smart Contract Audit Companion
+## BUG BOUNTY COMPANION
 
 A CLI-based tool for security researchers to manage and organize their smart contract audit workflow, with integrated AI-powered analysis.
 
