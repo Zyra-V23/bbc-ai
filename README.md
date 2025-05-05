@@ -24,8 +24,8 @@ A CLI-based tool for security researchers to manage and organize their smart con
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/smart-contract-audit-companion.git
-cd smart-contract-audit-companion
+git clone https://github.com/Zyra-V23/bbc-ai.git
+cd bbc-ai
 
 # Install dependencies
 pip install -r requirements.txt
